@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    internet:
+      url: jdbc:h2:mem:internet_db_test;DB_CLOSE_DELAY=-1
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+    intranet:
+      url: jdbc:h2:mem:intranet_db_test;DB_CLOSE_DELAY=-1
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: false
+
+app:
+  sync:
+    interval-ms: 60000
+  autoclose:
+    interval-ms: 60000
+    threshold-minutes: 10

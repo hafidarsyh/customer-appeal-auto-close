@@ -1,0 +1,6 @@
+app:
+  sync:
+    interval-ms: 20000 # 20 seconds
+  autoclose:
+    interval-ms: 30000 # 30 seconds
+    threshold-minutes: 2 # 2 minutes
