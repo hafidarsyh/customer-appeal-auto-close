@@ -85,9 +85,7 @@ curl -X POST http://localhost:8080/appeals \
 ```
 
 Either way it will only appear on the staff page after the next sync job
-run — or immediately if you click the **"Sync now"** button at the top of
-the staff appeals list, which triggers the same sync logic on demand
-(`POST /api/staff/sync`) instead of waiting for the schedule.
+run (or almost immediately if you're running the `demo` profile).
 
 ## Project layout
 

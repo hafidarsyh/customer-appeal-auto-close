@@ -6,9 +6,8 @@
 flowchart LR
     Customer -- "fills in /submit-appeal form" --> ReactPublic[Public React form]
     ReactPublic -- "POST /appeals" --> InternetDB[(internet_db)]
-    InternetDB -- "Sync job (every 5 min, or on demand)" --> IntranetDB[(intranet_db)]
+    InternetDB -- "Sync job (every 5 min)" --> IntranetDB[(intranet_db)]
     IntranetDB <-- "GET/POST /api/staff/appeals/*" --> React[Staff React page]
-    React -- "\"Sync now\" button: POST /api/staff/sync" --> InternetDB
     IntranetDB -- "Auto-close job (daily)" --> IntranetDB
 ```
 
@@ -73,7 +72,6 @@ doesn't model one. See NOTES.md.
 | GET    | `/api/staff/appeals`                | intranet_db  | List appeals for the staff page (id, customer, subject, status, lastUpdated), sorted by lastUpdated desc |
 | GET    | `/api/staff/appeals/{id}`           | intranet_db  | Full detail for one appeal                            |
 | POST   | `/api/staff/appeals/{id}/respond`   | intranet_db  | Body `{ "response": "..." }`. Sets status=AWAITING_CUSTOMER, stamps respondedAt + lastUpdated. Returns 409 if already CLOSED. |
-| POST   | `/api/staff/sync`                   | both         | Manually triggers the sync job right now instead of waiting for its schedule — backs the "Sync now" button. Calls the exact same `SyncJob.runSync()` the scheduler uses, so it's equally idempotent. Returns `{copied, message}`. |
 
 ## Scheduled jobs
 
@@ -87,11 +85,6 @@ doesn't model one. See NOTES.md.
   twice (or overlapping runs) never creates a duplicate, since the id is
   the natural key shared by both tables
 - Logs one line per copied appeal, plus a summary line per run
-- Can also be triggered on demand via `POST /api/staff/sync`
-  (`controller/SyncController.java`), which calls the same `runSync()`
-  method the `@Scheduled` wrapper calls — the scheduled and manual paths
-  share one code path, so there's no behavioral difference between them
-  beyond *when* they run.
 
 ### Auto-close job (`service/AutoCloseJob.java`)
 
@@ -106,8 +99,7 @@ doesn't model one. See NOTES.md.
 React + Vite, using `react-router-dom` for two routes:
 
 - `/` — the staff intranet page (`pages/StaffIntranetPage.jsx`): list +
-  detail/respond, plus a "Sync now" button that calls `POST
-  /api/staff/sync` and refreshes the list on completion.
+  detail/respond, same as before.
 - `/submit-appeal` — the public appeal form (`pages/PublicAppealForm.jsx`):
   name/subject/message, client-side required-field UX plus server-side
   bean validation, shows field-level errors returned by the API, and a

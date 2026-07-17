@@ -3,14 +3,11 @@
 ## In plain terms
 
 1. **A customer sends in an appeal.** For example, someone disputing a
-   parking fine fills in a short form on the council website — their name,
-   the subject, and a message explaining why they're appealing.
+   parking fine writes in explaining why they think it's wrong.
 
 2. **It lands in a review queue a few minutes later.** New appeals are
    picked up automatically and appear on the staff appeals page — you don't
-   need to do anything for them to show up. If you don't want to wait,
-   there's a "Sync now" button on the appeals page that pulls in any new
-   appeals immediately.
+   need to do anything for them to show up.
 
 3. **You open the appeal and reply.** You can see the customer's name, what
    they wrote, and when they submitted it. You type a response and post it.
@@ -31,21 +28,11 @@
 
 - A list of every appeal, showing who it's from, the subject, its current
   status, and when it was last touched.
-- A "Sync now" button, for when you don't want to wait for the automatic
-  sync — useful right after you know a customer has just submitted
-  something.
 - Statuses are: **Open** (new, not yet responded to), **Awaiting
   customer** (you've replied, the clock is running), or **Closed**
   (finished — either because the case was resolved or because it
   auto-closed from silence).
 - Click any appeal to see the full message and reply.
-
-## What the customer sees
-
-The customer fills in the public form and, once submitted, gets an
-on-screen confirmation with a reference number they can quote if they
-contact the council later. They don't see the internal status (Open /
-Awaiting customer / Closed) — that's staff-only.
 
 ## What officers don't need to worry about
 

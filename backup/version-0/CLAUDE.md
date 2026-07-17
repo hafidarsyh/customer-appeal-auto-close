@@ -40,12 +40,6 @@ project. Read it before making changes.
    right thing without attaching a debugger — don't remove it "to reduce
    noise."
 
-6. **There IS a public submission UI now (`/submit-appeal`), by explicit
-   request — don't "simplify" it back to API-only.** `POST /appeals` must
-   keep validating input (`@NotBlank` on customerName/subject/message) and
-   returning a confirmation `{referenceId, message}`, not the raw entity.
-   It still only ever writes to `internet_db`.
-
 ## Style
 
 - No Lombok — plain getters/setters on entities, so the code reads the

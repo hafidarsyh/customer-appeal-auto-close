@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { fetchAppeals } from '../api';
+import { fetchAppeals, manualSync } from '../api';
 
 export default function AppealList({ selectedId, onSelectAppeal }) {
   const [appeals, setAppeals] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
 
   const loadAppeals = async (showLoading = false) => {
     if (showLoading) setLoading(true);
@@ -16,6 +17,19 @@ export default function AppealList({ selectedId, onSelectAppeal }) {
       setError(err.message);
     } finally {
       if (showLoading) setLoading(false);
+    }
+  };
+
+  const handleSyncNow = async () => {
+    setSyncing(true);
+    setError(null);
+    try {
+      await manualSync();
+      await loadAppeals(false);
+    } catch (err) {
+      setError(`Sync failed: ${err.message}`);
+    } finally {
+      setSyncing(false);
     }
   };
 
@@ -37,7 +51,16 @@ export default function AppealList({ selectedId, onSelectAppeal }) {
     <div className="appeal-list-card">
       <div className="card-header">
         <h2>Appeals Queue</h2>
-        <button className="btn btn-secondary" onClick={() => loadAppeals(true)}>Refresh Now</button>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button
+            className="btn btn-primary"
+            onClick={handleSyncNow}
+            disabled={syncing}
+          >
+            {syncing ? 'Syncing...' : 'Sync Now'}
+          </button>
+          <button className="btn btn-secondary" onClick={() => loadAppeals(true)}>Refresh Now</button>
+        </div>
       </div>
       {error && <div className="error-message">Error: {error}</div>}
       <div className="table-wrapper">

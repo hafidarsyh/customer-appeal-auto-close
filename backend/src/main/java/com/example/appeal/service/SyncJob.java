@@ -28,8 +28,12 @@ public class SyncJob {
     }
 
     @Scheduled(fixedDelayString = "${app.sync.interval-ms}")
+    public void scheduledSync() {
+        runSync();
+    }
+
     @Transactional
-    public void syncNewAppeals() {
+    public int runSync() {
         logger.info("SyncJob: Starting synchronization run...");
         List<InternetAppeal> internetAppeals = internetRepo.findAll();
         int copiedCount = 0;
@@ -52,5 +56,6 @@ public class SyncJob {
         }
 
         logger.info("SyncJob: Completed run. Copied {} new appeals.", copiedCount);
+        return copiedCount;
     }
 }

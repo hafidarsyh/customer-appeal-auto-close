@@ -9,20 +9,25 @@ import com.example.appeal.service.AutoCloseJob;
 import com.example.appeal.service.SyncJob;
 import com.example.appeal.service.AppealService;
 import com.example.appeal.dto.AppealSummaryDto;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
 public class AppealAutoCloseApplicationTests {
+
+    @Autowired
+    private Validator validator;
 
     @Autowired
     private InternetAppealRepository internetRepo;
@@ -65,10 +70,12 @@ public class AppealAutoCloseApplicationTests {
         i2.setSubmittedAt(LocalDateTime.now());
         internetRepo.save(i2);
 
-        syncJob.syncNewAppeals();
+        int copied = syncJob.runSync();
+        assertEquals(2, copied);
         assertEquals(2, intranetRepo.count());
 
-        syncJob.syncNewAppeals();
+        copied = syncJob.runSync();
+        assertEquals(0, copied);
         assertEquals(2, intranetRepo.count());
     }
 
@@ -155,5 +162,20 @@ public class AppealAutoCloseApplicationTests {
         assertEquals(i.getId(), summary.getId());
         assertEquals("Internet Customer", summary.getCustomerName());
         assertEquals("Internet Subject", summary.getSubject());
+    }
+
+    @Test
+    public void testInternetAppealValidation() {
+        InternetAppeal appeal = new InternetAppeal();
+        appeal.setCustomerName("");
+        appeal.setSubject("   ");
+        appeal.setMessage(null);
+
+        Set<ConstraintViolation<InternetAppeal>> violations = validator.validate(appeal);
+        assertEquals(3, violations.size());
+
+        appeal.setCustomerName("John");
+        violations = validator.validate(appeal);
+        assertEquals(2, violations.size());
     }
 }

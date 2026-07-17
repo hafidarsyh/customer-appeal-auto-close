@@ -8,9 +8,7 @@
 
 2. **It lands in a review queue a few minutes later.** New appeals are
    picked up automatically and appear on the staff appeals page — you don't
-   need to do anything for them to show up. If you don't want to wait,
-   there's a "Sync now" button on the appeals page that pulls in any new
-   appeals immediately.
+   need to do anything for them to show up.
 
 3. **You open the appeal and reply.** You can see the customer's name, what
    they wrote, and when they submitted it. You type a response and post it.
@@ -31,9 +29,6 @@
 
 - A list of every appeal, showing who it's from, the subject, its current
   status, and when it was last touched.
-- A "Sync now" button, for when you don't want to wait for the automatic
-  sync — useful right after you know a customer has just submitted
-  something.
 - Statuses are: **Open** (new, not yet responded to), **Awaiting
   customer** (you've replied, the clock is running), or **Closed**
   (finished — either because the case was resolved or because it

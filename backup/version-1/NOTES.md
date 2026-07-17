@@ -30,14 +30,6 @@
 - **Auth.** Spec doesn't mention it; left both the staff API and the public
   form open (CORS `*`) since this is a demo, called out as a simplification
   in TECHNICAL.md.
-- **Manual "Sync now" button.** Added at the requester's explicit
-  direction, to trigger the internet_db → intranet_db sync on demand
-  instead of waiting up to 5 minutes. Rather than duplicating the sync
-  logic behind a second code path, I split `SyncJob` into a thin
-  `@Scheduled` wrapper (`scheduledSync()`) and a public `runSync()` that
-  both the scheduler and the new `POST /api/staff/sync` endpoint call — so
-  a manual sync behaves identically to (and is exactly as idempotent as) a
-  scheduled one, and there's only one place that logic can drift.
 
 ## How I'd test the cron jobs (not closing the wrong ones)
 
@@ -51,10 +43,9 @@
   `intranet_db` asserting `findByStatusAndRespondedAtBefore` returns
   exactly the expected ids for a seeded set of rows with `respondedAt`
   timestamps straddling the cutoff.
-- **Idempotency for the sync job:** call `runSync()` twice in a row
+- **Idempotency for the sync job:** call `syncNewAppeals()` twice in a row
   in a test and assert `intranetRepo.count()` doesn't change on the second
-  call, and no duplicate ids exist. Same method backs both the scheduled
-  job and the "Sync now" button, so this one test covers both triggers.
+  call, and no duplicate ids exist.
 - **End-to-end/manual:** what this repo's `demo` profile is for — seed
   data timed relative to a short threshold, watch the console log the
   exact ids it closes each run, cross-check against `GET

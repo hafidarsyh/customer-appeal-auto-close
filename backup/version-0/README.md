@@ -69,14 +69,11 @@ npm run dev
 
 Opens on `http://localhost:5173` and talks to the backend at
 `http://localhost:8080` (hardcoded base URL in `src/api.js` — fine for a
-demo, would move to an env var for real deployment). Two routes:
+demo, would move to an env var for real deployment).
 
-- `http://localhost:5173/` — staff intranet (list + respond)
-- `http://localhost:5173/submit-appeal` — public appeal submission form
+## Trying the public submission endpoint
 
-## Submitting an appeal
-
-Use the public form at `/submit-appeal`, or call the API directly:
+There's no public UI (not required by the spec). Submit a new appeal with:
 
 ```bash
 curl -X POST http://localhost:8080/appeals \
@@ -84,10 +81,8 @@ curl -X POST http://localhost:8080/appeals \
   -d '{"customerName":"Grace Kim","subject":"Speeding fine","message":"I was not speeding, the camera misread my plate."}'
 ```
 
-Either way it will only appear on the staff page after the next sync job
-run — or immediately if you click the **"Sync now"** button at the top of
-the staff appeals list, which triggers the same sync logic on demand
-(`POST /api/staff/sync`) instead of waiting for the schedule.
+It will only appear on the staff page after the next sync job run (or
+almost immediately if you're running the `demo` profile).
 
 ## Project layout
 

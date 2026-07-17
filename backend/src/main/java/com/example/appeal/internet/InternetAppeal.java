@@ -1,6 +1,7 @@
 package com.example.appeal.internet;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,11 +12,14 @@ public class InternetAppeal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Customer name is required")
     @Column(name = "customer_name")
     private String customerName;
 
+    @NotBlank(message = "Subject is required")
     private String subject;
 
+    @NotBlank(message = "Message is required")
     @Column(length = 4000)
     private String message;
 
